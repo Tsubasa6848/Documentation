@@ -1,12 +1,8 @@
 # 常见问题
 
-## 本项目的1.0版本基于什么？
-
-Sysca11/BedrockX
-
 ## 为什么我用Linux发行版开服内存占用这么高？
 
-这可能是Wine自身缺陷引发的的内存泄漏导致的，因此我们无法提供解决方案。如果你在使用我们提供的Docker镜像，可以通过限制容器内存大小来防止波及服务器上运行的其它服务。
+这可能是Wine自身缺陷引发的的内存泄漏导致的，因此我们无法提供解决方案。您可以通过**Docker**等容器限制内存大小来防止波及服务器上运行的其它服务。
 
 ## LiteLoaderBDS是否支持Minecraft不同版本？
 
@@ -18,7 +14,7 @@ LiteLoaderBDS会在开服时输出服务器版本及当前协议版本，你也�
 
 C++插件版本支持情况和LiteLoaderBDS本身相同，但可能可以在不同版本的Minecraft上不稳定地运行。
 
-## 非原生（JavaScript、Lua、Python、Rust、.NET）插件是否支持Minecraft不同版本？
+## 非原生（JavaScript、Lua、Rust、.NET）插件是否支持Minecraft不同版本？
 
 一般来说支持，除非LiteLoader Script Engine发生重大API改动。
 
@@ -53,7 +49,7 @@ C++插件版本支持情况和LiteLoaderBDS本身相同，但可能可以在不�
 ## 客户端区块错误
 
 这是由于假种子与客户端区块预生成导致的  
-如果你遇到这个问题，只需要在`plugins/LiteLoader/LiteLoader.json`中将`ClientChunkPreGeneration`禁用
+如果你遇到这个问题，只需要在`server.properties`中将`client-side-chunk-generation-enabled`改为false或在`plugins/LiteLoader/LiteLoader.json`中将`ClientChunkPreGeneration`禁用
 
 ## Imgui相关错误
 

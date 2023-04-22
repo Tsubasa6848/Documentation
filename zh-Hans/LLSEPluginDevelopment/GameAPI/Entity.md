@@ -71,6 +71,7 @@
 | en.type                  | 实体标准类型名         | `String`         |
 | en.id                    | 实体的游戏内id         | `Integer`        |
 | en.pos                   | 实体所在坐标           | `FloatPos`       |
+| en.feetPos               | 实体腿部所在坐标       | `FloatPos`       |
 | en.blockPos              | 实体所在的方块坐标     | `IntPos`         |
 | en.maxHealth             | 实体最大生命值         | `Integer`        |
 | en.health                | 实体当前生命值         | `Integer`        |
@@ -107,7 +108,8 @@
 
 这些对象属性都是只读的，无法被修改
 
-**实体当前朝向** 属性的详细解释见  [基础游戏接口文档](LLSEPluginDevelopment/GameAPI/Basic.md)
+- **实体当前朝向** 属性的详细解释见  [基础游戏接口文档](LLSEPluginDevelopment/GameAPI/Basic.md)
+- **坐标** 和 **腿部坐标**：如果这个实体为两格高，则`pos`与`feetPos`不同，`pos`为实体视角高度的坐标，`feetPos`为腿部所在格子的方块坐标
 
 <br>
 
@@ -117,12 +119,16 @@
 
 #### 传送实体至指定位置
 
-`en.teleport(pos)`  
-`en.teleport(x,y,z,dimid)`
+`en.teleport(pos[,rot])`  
+`en.teleport(x,y,z,dimid,[,rot])`
 
 - 参数：
   - pos :`IntPos `/ `FloatPos`  
     目标位置坐标（或者使用x, y, z, dimid来确定实体位置）
+    
+  - rot: `DirectionAngle`
+  
+    （可选参数）传送后实体的朝向，若缺省则与传送前朝向相同
 - 返回值：是否成功传送
 - 返回值类型：`Boolean`
 
@@ -131,6 +137,24 @@
 #### 杀死指定实体  
 
 `en.kill()`
+
+- 返回值：是否成功执行
+- 返回值类型：`Boolean`
+
+<br>
+
+#### 使指定实体刷新消失  
+
+`en.despawn()`
+
+- 返回值：是否成功执行
+- 返回值类型：`Boolean`
+
+<br>
+
+#### 移除指定实体  
+
+`en.remove()`
 
 - 返回值：是否成功执行
 - 返回值类型：`Boolean`
@@ -377,6 +401,8 @@
     目标位置
 - 返回值: 到坐标的距离(方块)
 - 返回值类型:  `Number`
+
+> **注意** 若玩家的坐标与目标的坐标不在同一维度，将返回整数最大值。
 
 <br>
 

@@ -1,8 +1,8 @@
 # LiteLoaderBDS文档
 
 [![Build](https://img.shields.io/github/actions/workflow/status/LiteLDev/LiteLoaderBDS/cmake_repo.yml?style=for-the-badge)](https://github.com/LiteLDev/LiteLoader/actions)
-[![Latest Tag](https://img.shields.io/github/v/tag/LiteLDev/LiteLoader?label=LATEST%20TAG&style=for-the-badge)](https://github.com/LiteLDev/LiteLoader/releases/latest)
-[![Downloads@Latest](https://img.shields.io/github/downloads/LiteLDev/LiteLoader/latest/total?style=for-the-badge)](https://github.com/LiteLDev/LiteLoader/releases/latest)
+[![Latest Tag](https://img.shields.io/github/v/tag/LiteLDev/LiteLoaderBDS?label=LATEST%20TAG&style=for-the-badge)](https://github.com/LiteLDev/LiteLoaderBDS/releases/latest)
+[![Downloads@Latest](https://img.shields.io/github/downloads/LiteLDev/LiteLoaderbds/latest/total?style=for-the-badge)](https://github.com/LiteLDev/LiteLoaderBDS/releases/latest)
 
 ## 🎨 什么是LiteLoaderBDS？
 
@@ -68,27 +68,6 @@
 
 准备好了吗？ 👉[点击此处](/LLSEPluginDevelopment/)👈 查看脚本插件开发文档。
 
-### 🍳 我想写Python插件
-
-由于ScriptX暂不支持Python，所以需要使用[twoone-3/BDSpyrunner](https://github.com/twoone-3/BDSpyrunner)作为Python支持中间件。
-
-优点：
-* 无需关注**BDS**底层，容易上手开发；
-* 理论上不需要更新，即可支持所有Minecraft版本；
-* 非常安全，且随着**LiteLoaderBDS**更新，漏洞自动修复。
-
-缺点：
-* 由第三方开发者维护，可能得不到最新支持；
-* 代码管理难度高，随着代码量增加，维护变得困难；
-* API较少，可能无法用于实现偏门的功能；
-* 性能较差。
-
-建议用于不超过五千行代码的玩法类和辅助类插件。
-
-首先你需要参考[本教程](https://github.com/twoone-3/BDSpyrunner/wiki)安装BDSpyrunner。
-
-准备好了吗？ 👉[点击此处](https://github.com/twoone-3/BDSpyrunner/wiki/Devlopment)👈 查看Python插件开发文档。
-
 ### 🪁 我想写.NET插件（C#、F#或Visual Basic）
 
 优点：
@@ -102,3 +81,9 @@
 建议对.NET平台较为熟悉的开发者使用。
 
 准备好了吗？ 👉[点击此处](/DotNETPluginDevelopment/)👈 查看 .NET插件开发文档。
+
+### ❤️ 我想发布我的插件
+
+当你写好了一个富有创造力的插件，你一定会希望更多的人使用它。那么你需要做的就是将它发布到各种插件平台。
+
+我们强烈建议你将插件封装为[Lip包管理工具](https://lip.docs.litebds.com)所支持的齿包，这样可以使得任何人都可以通过Lip工具，轻松地安装你的插件。你可以参考：[创建一个齿包](https://lip.docs.litebds.com/zh-Hans/#/tutorials/create_a_lip_tooth)和[将齿包提交到Lip Registry](https://lip.docs.litebds.com/zh-Hans/#/tutorials/submit_your_tooth_to_lip_registry)。

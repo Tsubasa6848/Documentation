@@ -70,6 +70,7 @@ Every entity object contains some fixed object properties. for a specific entity
 | en.type                  | Entity type name                                       | `String`         |
 | en.id                    | Entity's in-game ID                                    | `Integer`        |
 | en.pos                   | Entity's coordinates                                   | `FloatPos`       |
+| en.feetPos               | The coordinates of the entity's leg                    | `FloatPos`       |
 | en.blockPos              | The coordinates of the block the entity is standing on | `IntPos`         |
 | en.maxHealth             | Entity's maximum health                                | `Integer`        |
 | en.health                | Entity's current health                                | `Integer`        |
@@ -105,7 +106,8 @@ Every entity object contains some fixed object properties. for a specific entity
 
 These object properties are read-only and cannot be modified.
 
-For a detailed explanation of the **entity's current orientation** attribute, see the [Basic Game Interface Documentation](/LLSEPluginDevelopment/GameAPI/Basic.md)
+- For a detailed explanation of the **entity's current orientation** attribute, see the [Basic Game Interface Documentation](/LLSEPluginDevelopment/GameAPI/Basic.md)
+- **coordinates** and **leg coordinates**: if this entity is two blocks high, `pos` is different from `feetPos`, `pos` is the coordinate of the entity's view's height and `feetPos` is the coordinate of the block where the leg is located
 
 <br>
 
@@ -115,12 +117,16 @@ Each entity object contains some member functions (member methods) that can be e
 
 #### Teleport Entity to Specified Location
 
-`en.teleport(pos)`  
-`en.teleport(x,y,z,dimid)`
+`en.teleport(pos[,rot])`  
+`en.teleport(x,y,z,dimid[,rot])`
 
 - Parameters: 
   - pos :`IntPos `/ `FloatPos`  
     Target position coordinates (or use x, y, z, dimid to determine entity position)
+    
+  - rot: `DirectionAngle`
+    
+    (Optional) The orientation of the entity after teleport, or the same orientation as before teleport if default
 - Return value: Whether the teleport was successful or not.
 - Return value type:  `Boolean`
 
@@ -129,6 +135,24 @@ Each entity object contains some member functions (member methods) that can be e
 #### Kill the Specified Entity  
 
 `en.kill()`
+
+- Return value: Whether the entity execution was successful.
+- Return value type:  `Boolean`
+
+<br>
+
+#### Make the Specified Entity Despawn
+
+`en.despawn()`
+
+- Return value: Whether the entity execution was successful.
+- Return value type:  `Boolean`
+
+<br>
+
+#### Remove the Specified Entity  
+
+`en.remove()`
 
 - Return value: Whether the entity execution was successful.
 - Return value type:  `Boolean`

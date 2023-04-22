@@ -41,7 +41,6 @@ mc.runcmd("say Hello!")
 
 
 > [!NOTE]
->
 > The implementation of runcmdEx is very different from ordinary runcmd. The Enhanced version has a **hidden execution** mechanism, and the execution result will not be output to the console. Therefore, if necessary, you must manually use the log function to output the result.
 
 [JavaScript]
@@ -53,6 +52,8 @@ log(result.output);
 ## Command Registration API
 
 An interface for registering custom commands is provided here. By docking with the built-in command system of BDS, the commands you register can be used by players, consoles, command blocks, NPCs and other objects that can execute commands in games. In addon, you can also use the commands registered here.
+> [!WARNING]
+> Except for variable parameters (String, RawText, Message, etc.), the commands cannot contain non-English lowercase letters!
 
 ### Register a Top-Level Command
 
@@ -109,8 +110,8 @@ Through the command object, you can register various forms and functions for thi
     Enumeration name, used to distinguish the enumeration when setting parameters.
   - values : `Array<String>`  
     Valid values ​​for enumeration.
-- Return value: Whether setting succeeded or not.
-- Return value type: `Boolean`
+- Return value: New enumeration option identification name.
+- Return value type: `String`
 
 #### Add a Required Parameter
 
@@ -151,26 +152,26 @@ Through the command object, you can register various forms and functions for thi
 
 #### Valid Command Parameter Types and Explanations 
 
-| Command Parameter Type | Meaning                                                                                                        |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `ParamType.Bool`       | Boolean Parameter                                                                                              |
-| `ParamType.Int`        | Integer Parameter                                                                                              |
-| `ParamType.Float`      | Floating point Parameter                                                                                       |
-| `ParamType.String`     | String Parameter                                                                                               |
-| `ParamType.Actor`      | Entity Target Selector Parameter                                                                               |
-| `ParamType.Player`     | Player Target Selector Parameter                                                                               |
-| `ParamType.BlockPos`   | Integer Coordinate Parameters                                                                                  |
-| `ParamType.Vec3`       | Floating Point Coordinate Parameter                                                                            |
-| `ParamType.RawText`    | Raw String Arguments (May Contain Special Characters Like Comma Spaces)                                        |
-| `ParamType.Message`    | Message Type Parameter (Same as `/Say` Command Parameter, Will Automatically Expand the Target Selector, Etc.) |
-| `ParamType.JsonValue`  | `JSON` string parameter                                                                                        |
-| `ParamType.Item`       | Item Type Parameter                                                                                            |
-| `ParamType.Block`      | Block Type Parameter(has been removed in 1.19.50)                                                              |
-| `ParamType.Effect`     | Effect Type Parameter                                                                                          |
-| `ParamType.Enum`       | Enum Parameter                                                                                                 |
-| `ParamType.SoftEnum`   | Variable Enum Parameter                                                                                        |
-| `ParamType.ActorType`  | Entity Type Parameter                                                                                          |
-| `ParamType.Command`    | Command Name Parameter (For Testing Only)                                                                      |
+| Command Parameter Type | Meaning                                                                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `ParamType.Bool`       | Boolean Parameter                                                                                               |
+| `ParamType.Int`        | Integer Parameter                                                                                               |
+| `ParamType.Float`      | Floating point Parameter                                                                                        |
+| `ParamType.String`     | String Parameter                                                                                                |
+| `ParamType.Actor`      | Entity Target Selector Parameter                                                                                |
+| `ParamType.Player`     | Player Target Selector Parameter                                                                                |
+| `ParamType.BlockPos`   | Integer Coordinate Parameters                                                                                   |
+| `ParamType.Vec3`       | Floating Point Coordinate Parameter                                                                             |
+| `ParamType.RawText`    | Raw String Arguments (May contain special characters like comma spaces, Can only be used as the last parameter) |
+| `ParamType.Message`    | Message Type Parameter (Same as `/Say` Command Parameter, Will Automatically Expand the Target Selector, Etc.)  |
+| `ParamType.JsonValue`  | `JSON` string parameter                                                                                         |
+| `ParamType.Item`       | Item Type Parameter                                                                                             |
+| `ParamType.Block`      | Block Type Parameter                                                                                            |
+| `ParamType.Effect`     | Effect Type Parameter                                                                                           |
+| `ParamType.Enum`       | Enum Parameter                                                                                                  |
+| `ParamType.SoftEnum`   | Variable Enum Parameter                                                                                         |
+| `ParamType.ActorType`  | Entity Type Parameter                                                                                           |
+| `ParamType.Command`    | Command Name Parameter (For Testing Only)                                                                       |
 
 #### Add a New Command Overload
 
@@ -280,26 +281,26 @@ The content of `results` is `object<command parameter name-data value>` key-valu
 
 The relationship between command parameter types and data value types is as follows:
 
-| Command Parameter Type | Data Value Type | Meaning                                                                                                   |
-| ---------------------- | --------------- | --------------------------------------------------------------------------------------------------------- |
-| `ParamType.Bool`       | `Boolean`       | Boolean Value                                                                                             |
-| `ParamType.Int`        | `Integer`       | Integer Value                                                                                             |
-| `ParamType.Float`      | `Float`         | Floating Point Value                                                                                      |
-| `ParamType.String`     | `String`        | String                                                                                                    |
-| `ParamType.Actor`      | `Array<Actor>`  | The entity selected by the entity target selector                                                         |
-| `ParamType.Player`     | `Array<Player>` | The entity selected by the player's target selector                                                       |
-| `ParamType.BlockPos`   | `IntPos`        | Integer Coordinate Object                                                                                 |
-| `ParamType.Vec3`       | `FloatPos`      | Floating Point Coordinate Object                                                                          |
-| `ParamType.RawText`    | `String`        | Raw string (may contain special characters like comma spaces)                                             |
-| `ParamType.Message`    | `String`        | Message Type String (same as `/say` command parameters, will automatically expand target selectors, etc.) |
-| `ParamType.JsonValue`  | `String`        | `JSON` String                                                                                             |
-| `ParamType.Item`       | `Item`          | Item Type                                                                                                 |
-| `ParamType.Block`      | `Block`         | Block Type                                                                                                |
-| `ParamType.Effect`     | `String`        | Effect Type String                                                                                        |
-| `ParamType.Enum`       | `String`        | Enumerated String                                                                                         |
-| `ParamType.SoftEnum`   | `String`        | Mutable Enumerated String                                                                                 |
-| `ParamType.ActorType`  | `String`        | Entity Type String                                                                                        |
-| `ParamType.Command`    | `String`        | Command Name (For testing only)                                                                           |
+| Command Parameter Type | Data Value Type | Meaning                                                                                                         |
+| ---------------------- | --------------- | --------------------------------------------------------------------------------------------------------------- |
+| `ParamType.Bool`       | `Boolean`       | Boolean Value                                                                                                   |
+| `ParamType.Int`        | `Integer`       | Integer Value                                                                                                   |
+| `ParamType.Float`      | `Float`         | Floating Point Value                                                                                            |
+| `ParamType.String`     | `String`        | String                                                                                                          |
+| `ParamType.Actor`      | `Array<Actor>`  | The entity selected by the entity target selector                                                               |
+| `ParamType.Player`     | `Array<Player>` | The entity selected by the player's target selector                                                             |
+| `ParamType.BlockPos`   | `IntPos`        | Integer Coordinate Object                                                                                       |
+| `ParamType.Vec3`       | `FloatPos`      | Floating Point Coordinate Object                                                                                |
+| `ParamType.RawText`    | `String`        | Raw String Arguments (May contain special characters like comma spaces, Can only be used as the last parameter) |
+| `ParamType.Message`    | `String`        | Message Type String (same as `/say` command parameters, will automatically expand target selectors, etc.)       |
+| `ParamType.JsonValue`  | `String`        | `JSON` String                                                                                                   |
+| `ParamType.Item`       | `Item`          | Item Type                                                                                                       |
+| `ParamType.Block`      | `Block`         | Block Type                                                                                                      |
+| `ParamType.Effect`     | `String`        | Effect Type String                                                                                              |
+| `ParamType.Enum`       | `String`        | Enumerated String                                                                                               |
+| `ParamType.SoftEnum`   | `String`        | Mutable Enumerated String                                                                                       |
+| `ParamType.ActorType`  | `String`        | Entity Type String                                                                                              |
+| `ParamType.Command`    | `String`        | Command Name (For testing only)                                                                                 |
 
 ### Command Registration Example 
 
@@ -362,7 +363,7 @@ Note: The callback function prototype of the parameter callback: `function(playe
   The player that executes the command.
 - args : `Array<String,String...>`    
   Arguments following the target command. Divide by spaces to form a string array.  
-If a custom command `land set` is registered, when `/land set abc 2333` is executed, the value of args will be `[ "abc","2333" ]`
+  If a custom command `land set` is registered, when `/land set abc 2333` is executed, the value of args will be `[ "abc","2333" ]`
 
 [JavaScript]
 ```js
@@ -392,7 +393,7 @@ mc.regPlayerCmd("fly on","Turn on the fly mode",function(pl,args){
 Note: The callback function prototype of the parameter callback: `function(args)`
 
 - args : `Array<String,String...>`      
-Arguments following the target command. Divide by spaces to form a string array.
+  Arguments following the target command. Divide by spaces to form a string array.
    If a custom command `land set` is registered, when `/land set abc 2333` is executed, the value of args will be `['abc','2333']`
 
 [JavaScript]

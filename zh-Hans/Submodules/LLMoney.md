@@ -6,13 +6,13 @@
 
 ## 仓库地址
 
-https://github.com/LiteLDev/LLEssentials
+https://github.com/LiteLDev/LLMoney
 
 ## 配置文件路径
 
 `plugins/LLMoney/money.json`
 配置文件示例:
-```jsonc
+```json
 {
     "language": "en-us", //语言，改为zh-cn为中文
     "def_money": 0, //默认金钱数

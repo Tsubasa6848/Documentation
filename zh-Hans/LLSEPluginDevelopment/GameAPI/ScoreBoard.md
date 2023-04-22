@@ -90,6 +90,7 @@ MC使用 **计分项** 作为计分板系统的核心，每一个计分项拥有
 - 返回值：该目标/玩家在此计分项中的分数
 - 返回值类型：`Integer`
 
+**使用前请保证计分项存在**
 <br>
 
 #### 修改某个目标的分数
@@ -107,6 +108,9 @@ MC使用 **计分项** 作为计分板系统的核心，每一个计分项拥有
 - 返回值类型：`Integer`
   - 如果返回`Null`，则代表操作失败
 
+[!warning]
+若计分项不存在，则会尝试创建计分项，此时会返回`0`(当*target*为`String`时)或`null`(当*target*为`Player`时)  
+原因参见: [#971](https://github.com/LiteLDev/LiteLoaderBDS/issues/971#issuecomment-1385047649)
 <br>
 
 #### 停止跟踪某个目标
@@ -185,7 +189,7 @@ log("You have money:",pl.getScore("money"));
 - 返回值：是否设置成功
 - 返回值类型：`Boolean`
 
-使用前，必须保证对应的计分项已经存在
+若计分项不存在，则会返回`false`并创建计分项
 
 [JavaScript]
 ```js
@@ -199,7 +203,8 @@ pl.reduceScore("money",50);
 
 设置分数 `mc.setPlayerScore(uuid, name, value)`  
 增加分数 `mc.addPlayerScore(uuid, name, value)`  
-减少分数 `mc.reducePlayerScore(uuid, name, value)`
+减少分数 `mc.reducePlayerScore(uuid, name, value)`  
+移除分数 `mc.deletePlayerScore(uuid, name)`
 
 - 参数：
   - uuid : `String`  

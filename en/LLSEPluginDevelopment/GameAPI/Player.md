@@ -45,6 +45,7 @@ Each player object contains some fixed object properties. For a particular playe
 | ------------------------ | ------------------------------------------------------------ | ---------------- |
 | pl.name                  | Player's name                                                | `String`         |
 | pl.pos                   | Player's coordinates                                         | `FloatPos`       |
+| pl.feetPos               | The coordinates of the player's leg                          | `FloatPos`       |
 | pl.blockPos              | The coordinates of the block that the player is standing on. | `IntPos`         |
 | pl.lastDeathPos          | The coordinates of the block that the player last died.      | `IntPos`         |
 | pl.realName              | Player's Real Name                                           | `String`         |
@@ -71,7 +72,6 @@ Each player object contains some fixed object properties. For a particular playe
 | pl.inWaterOrRain         | Whether the player is in water or rain                       | `Boolean`        |
 | pl.inWorld               | Whether the player is in world                               | `Boolean`        |
 | pl.inClouds              | Whether the player is in clouds                              | `Boolean`        |
-| pl.sneaking              | Whether the player is sneaking                               | `Boolean`        |
 | pl.speed                 | Player's current speed                                       | `Float`          |
 | pl.direction             | Player's current orientation                                 | `DirectionAngle` |
 | pl.uniqueId              | Player's (entity's) unique identifier                        | `String`         |
@@ -96,9 +96,11 @@ Each player object contains some fixed object properties. For a particular playe
 | pl.isFlying              | Player is flying                                             | `Boolean`        |
 | pl.isSleeping            | Player is sleeping                                           | `Boolean`        |
 | pl.isMoving              | Player is moving                                             | `Boolean`        |
+| pl.isSneaking            | Player is sneaking                                           | `Boolean`        |
 
 These object properties are read-only and cannot be modified. in:
 
+- **coordinates** and **leg coordinates**: player is two blocks high, and `pos` are the coordinates of the player's view's height, `feetPos` are the coordinates of the block position displayed in the game
 - The value of the **Player Game Mode** attribute is: `0` for survival mode, `1` for creative mode, `2` for adventure mode, `3` for spectator mode
 - **Player's real name** attribute stored strings can be considered reliable, they will not be changed by name changes
 - **Player device IP address** attribute stores the player's device IP and port number, the format is similar to `12.34.567.89:1111`
@@ -329,13 +331,19 @@ var open = pl.runcmd("tp ~ ~+50 ~");
 
 #### Teleport the Player to the Specified Location  
 
-`pl.teleport(pos)`  
-`pl.teleport(x,y,z,dimid)`
+`pl.teleport(pos[,rot])`  
+`pl.teleport(x,y,z,dimid[,rot])`
 
 - Parameters: 
-  - pos :`IntPos `/ `FloatPos`  
+  - pos: `IntPos `/ `FloatPos`  
     Target position coordinates (or use x, y, z, dimid to determine player position)
+    
+  - rot: `DirectionAngle`
+  
+    (Optional) The orientation of the player after teleport, or the same orientation as before teleport if default
+  
 - Return value: Whether the teleport was successful or not.
+
 - Return value type: `Boolean`
 
 [JavaScript]
@@ -699,11 +707,13 @@ If the player's inventory is full, excess items will be drop.
 
 #### Clears All Items of the Specified Type From the Player’s Backpack
 
-`pl.clearItem(type)`
+`pl.clearItem(type[, count)`
 
 - Parameters: 
   - type : `String`  
     Item object type name to clear
+  - count : `Integer`  
+    (Optional)Item count to be clear
 - Return value: The number of items cleared
 - Return value type: `Integer`
 

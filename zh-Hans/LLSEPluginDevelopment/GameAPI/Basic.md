@@ -76,7 +76,8 @@
 
 #### 生成一个整数坐标对象
 
-`mc.newIntPos(x,y,z,dimid)`
+[JavaScript] `new IntPos(x,y,z,dimid)`  
+[Lua] `IntPos(x,y,z,dimid)`
 
 - 参数：
   - x : `Integer`  
@@ -92,7 +93,8 @@
 
 #### 生成一个浮点数坐标对象
 
-`mc.newFloatPos(x,y,z,dimid)`
+[JavaScript] `new FloatPos(x,y,z,dimid)`  
+[Lua] `FloatPos(x,y,z,dimid)`
 
 - 参数：
   - x : `Float`  
@@ -121,7 +123,20 @@
 
 由于MC的实体系统不存在 自转 的概念，所以没有翻滚角相关数据
 
-### 将偏航角转换为基本朝向
+#### 创建偏航角
+
+[JavaScript] `new DirectionAngle(pitch, yaw)`  
+[Lua] `DirectionAngle(pitch, yaw)`
+
+- 参数：
+  - pitch : `Float`  
+    俯仰角
+  - yaw : `Float`  
+    偏航角（旋转角）
+- 返回值：一个方向角对象
+- 返回值类型：`DirectionAngle`
+
+#### 将偏航角转换为基本朝向
 
 `ang.toFacing()`
 

@@ -1,18 +1,19 @@
 - [🎨 Home](/README.md)
 
-- 👍 User guide
+- 👍 User Guide
     - [🔨 Installation and Usage](/Usage.md)
     - [❓ Frequently Asked Questions ](/FAQ.md)
     - 🧩 Submodules
         - [💰 LLMoney Economy System](/Submodules/LLMoney.md)
         - [🔒 PermissionAPI](/Submodules/PermAPI.md)
+        - [✨ ParticleAPI](/Submodules/ParticleAPI.md)
 
-- 🍔 Developer guide
+- 🍔 Creator Guide
     - [⛳ C++ Plugin Development](https://cpp.docs.litebds.com/en)
     - 🎯 Script Plugin Development
         - [⛳ For Beginners (Must Read)](/LLSEPluginDevelopment/)
-        - [📋 Multi Development Language Support](/LLSEPluginDevelopment/LanguageSupport.md)
-        - [📜 Using JavaScript to Create Your First Plugin](/LLSEPluginDevelopment/LLSEJSPlugin.md)
+        - [📋 Multi Development Language Support (Must Read)](/LLSEPluginDevelopment/LanguageSupport.md)
+        - [📜 Quick Start: Create your first script plugin with JS](/LLSEPluginDevelopment/LLSEJSPlugin.md)
         - [💼 Generic Script Interface (Commonly Used)](/LLSEPluginDevelopment/ScriptAPI/ScriptHelp.md)
 
         - Game Content Interface
@@ -68,12 +69,5 @@
             - [🌏 Network](/LLSEPluginDevelopment/SystemAPI/Network.md)
             - [📡 System Calls](/LLSEPluginDevelopment/SystemAPI/SystemCall.md)
             - [📜 Get System Information](/LLSEPluginDevelopment/SystemAPI/SystemInfo.md)
-
-- 🎬 Maintenance
-    - [⛳ Welcome! ](/Maintenance/README.md)
-    - [👓 Architecture](/Maintenance/Analysis.md)
-    - [🎯 Contribution](/Maintenance/Coding.md)
-    - [🚥 C++ Style Guide](/Maintenance/StyleGuide.md)
-    - [💡 Conclusion](/Maintenance/Conclusion.md)
 
 - [💦 Changelog](https://github.com/LiteLDev/LiteLoaderBDS/releases)

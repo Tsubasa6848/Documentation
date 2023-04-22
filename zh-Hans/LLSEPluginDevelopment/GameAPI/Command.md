@@ -43,7 +43,6 @@ mc.runcmd("say Hello!")
 
 
 > [!NOTE]
->
 > runcmdEx 与普通 runcmd 实现区别非常大，在于 Ex 版本拥有**隐藏输出**的机制，执行结果不会输出至控制台，因此如果有需要，要手动用 log 函数将结果输出
 
 [JavaScript]
@@ -55,6 +54,8 @@ log(result.output);
 ## 命令注册 API
 
 这里提供了注册自定义命令的接口。通过对接 BDS 内置的命令系统，你注册的命令可以由玩家、控制台、命令方块、NPC等各种游戏中可以执行命令的对象所使用，在 addon 中，也可以使用这里所注册的命令。
+> [!WARNING]
+> 命令中除了可变参数(String, RawText, Message等)外，均不能包含非英文小写字母！
 
 ### 注册一条顶层命令
 
@@ -116,8 +117,8 @@ log(result.output);
     枚举名，用于设置参数时区分枚举
   - values : `Array<String>`  
     枚举的有效值
-- 返回值：是否成功设置
-- 返回值类型：`Boolean`
+- 返回值：新增枚举选项的标识名称
+- 返回值类型：`String`
 
 #### 新增一个必选参数
 
@@ -158,28 +159,30 @@ log(result.output);
 
 #### 有效的命令参数类型及解释
 
-| 命令参数类型          | 含义                                                       |
-| --------------------- | ---------------------------------------------------------- |
-| `ParamType.Bool`      | 布尔值参数                                                 |
-| `ParamType.Int`       | 整数参数                                                   |
-| `ParamType.Float`     | 浮点数参数                                                 |
-| `ParamType.String`    | 字符串参数                                                 |
-| `ParamType.Actor`     | 实体目标选择器参数                                         |
-| `ParamType.Player`    | 玩家目标选择器参数                                         |
-| `ParamType.BlockPos`  | 整数坐标参数                                               |
-| `ParamType.Vec3`      | 浮点数坐标参数                                             |
-| `ParamType.RawText`   | 原始字符串参数（可包含特殊字符，如逗号空格）               |
-| `ParamType.Message`   | 消息类型参数（同 `/say` 指令参数，会自动展开目标选择器等） |
-| `ParamType.JsonValue` | JSON字符串参数                                             |
-| `ParamType.Item`      | 物品类型参数                                               |
-| `ParamType.Block`     | 方块类型参数(在1.19.50被移除)                              |
-| `ParamType.Effect`    | 效果类型参数                                               |
-| `ParamType.Enum`      | 枚举参数                                                   |
-| `ParamType.SoftEnum`  | 可变枚举参数                                               |
-| `ParamType.ActorType` | 实体类型参数                                               |
-| `ParamType.Command`   | 指令名称参数（仅供测试）                                   |
+| 命令参数类型          | 含义                                                                 |
+| --------------------- | -------------------------------------------------------------------- |
+| `ParamType.Bool`      | 布尔值参数                                                           |
+| `ParamType.Int`       | 整数参数                                                             |
+| `ParamType.Float`     | 浮点数参数                                                           |
+| `ParamType.String`    | 字符串参数                                                           |
+| `ParamType.Actor`     | 实体目标选择器参数                                                   |
+| `ParamType.Player`    | 玩家目标选择器参数                                                   |
+| `ParamType.BlockPos`  | 整数坐标参数                                                         |
+| `ParamType.Vec3`      | 浮点数坐标参数                                                       |
+| `ParamType.RawText`   | 原始字符串参数(可包含特殊字符，如逗号空格，只能作为最后一个参数使用) |
+| `ParamType.Message`   | 消息类型参数(同 `/say` 指令参数，会自动展开目标选择器等)             |
+| `ParamType.JsonValue` | JSON字符串参数                                                       |
+| `ParamType.Item`      | 物品类型参数                                                         |
+| `ParamType.Block`     | 方块类型参数                                                         |
+| `ParamType.Effect`    | 效果类型参数                                                         |
+| `ParamType.Enum`      | 枚举参数                                                             |
+| `ParamType.SoftEnum`  | 可变枚举参数                                                         |
+| `ParamType.ActorType` | 实体类型参数                                                         |
+| `ParamType.Command`   | 指令名称参数（仅供测试）                                             |
 
 #### 新增一条指令重载
+
+要想让命令正常运行，必须至少添加一条重载。所谓重载，本质上相当于参数的组合，譬如重载`['a', 'b', 'c']`相当于命令可以被执行为`/cmd <a> <b> <c>`，而重载`[]`相当于可以被执行为`/cmd`。重载的参数标识符可以是参数名、枚举名、参数标识符，但不能使用无法区分具体参数的标识符，如两个参数都叫 `action` 但枚举选项不同，此时应该使用枚举名而不是参数名。
 
 `Command.overload(params)`
 
@@ -287,26 +290,26 @@ log(result.output);
 
 命令参数类型 和 数据值类型 的对应关系如下
 
-| 命令参数类型          | 数据值类型      | 含义                                                         |
-| --------------------- | --------------- | ------------------------------------------------------------ |
-| `ParamType.Bool`      | `Boolean`       | 布尔值                                                       |
-| `ParamType.Int`       | `Integer`       | 整数                                                         |
-| `ParamType.Float`     | `Float`         | 浮点数                                                       |
-| `ParamType.String`    | `String`        | 字符串                                                       |
-| `ParamType.Actor`     | `Array<Actor>`  | 实体目标选择器 选中的实体                                    |
-| `ParamType.Player`    | `Array<Player>` | 玩家目标选择器 选中的实体                                    |
-| `ParamType.BlockPos`  | `IntPos`        | 整数坐标对象                                                 |
-| `ParamType.Vec3`      | `FloatPos`      | 浮点数坐标对象                                               |
-| `ParamType.RawText`   | `String`        | 原始字符串（可包含特殊字符，如逗号空格）                     |
-| `ParamType.Message`   | `String`        | 消息类型字符串（同 `/say` 指令参数，会自动展开目标选择器等） |
-| `ParamType.JsonValue` | `String`        | JSON字符串                                                   |
-| `ParamType.Item`      | `Item`          | 物品类型                                                     |
-| `ParamType.Block`     | `Block`         | 方块类型                                                     |
-| `ParamType.Effect`    | `String`        | 效果类型字符串                                               |
-| `ParamType.Enum`      | `String`        | 枚举字符串                                                   |
-| `ParamType.SoftEnum`  | `String`        | 可变枚举字符串                                               |
-| `ParamType.ActorType` | `String`        | 实体类型字符串                                               |
-| `ParamType.Command`   | `String`        | 指令名称（仅供测试）                                         |
+| 命令参数类型          | 数据值类型      | 含义                                                             |
+| --------------------- | --------------- | ---------------------------------------------------------------- |
+| `ParamType.Bool`      | `Boolean`       | 布尔值                                                           |
+| `ParamType.Int`       | `Integer`       | 整数                                                             |
+| `ParamType.Float`     | `Float`         | 浮点数                                                           |
+| `ParamType.String`    | `String`        | 字符串                                                           |
+| `ParamType.Actor`     | `Array<Actor>`  | 实体目标选择器 选中的实体                                        |
+| `ParamType.Player`    | `Array<Player>` | 玩家目标选择器 选中的实体                                        |
+| `ParamType.BlockPos`  | `IntPos`        | 整数坐标对象                                                     |
+| `ParamType.Vec3`      | `FloatPos`      | 浮点数坐标对象                                                   |
+| `ParamType.RawText`   | `String`        | 原始字符串(可包含特殊字符，如逗号空格，只能作为最后一个参数使用) |
+| `ParamType.Message`   | `String`        | 消息类型字符串(同 `/say` 指令参数，会自动展开目标选择器等)       |
+| `ParamType.JsonValue` | `String`        | JSON字符串                                                       |
+| `ParamType.Item`      | `Item`          | 物品类型                                                         |
+| `ParamType.Block`     | `Block`         | 方块类型                                                         |
+| `ParamType.Effect`    | `String`        | 效果类型字符串                                                   |
+| `ParamType.Enum`      | `String`        | 枚举字符串                                                       |
+| `ParamType.SoftEnum`  | `String`        | 可变枚举字符串                                                   |
+| `ParamType.ActorType` | `String`        | 实体类型字符串                                                   |
+| `ParamType.Command`   | `String`        | 指令名称（仅供测试）                                             |
 
 ### 命令注册样例
 

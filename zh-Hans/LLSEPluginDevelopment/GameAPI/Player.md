@@ -45,6 +45,7 @@
 | ------------------------ | --------------------------------- | ---------------- |
 | pl.name                  | 玩家名                            | `String`         |
 | pl.pos                   | 玩家所在坐标                      | `FloatPos`       |
+| pl.feetPos               | 玩家腿部所在坐标                  | `FloatPos`       |
 | pl.blockPos              | 玩家所在的方块坐标                | `IntPos`         |
 | pl.lastDeathPos          | 玩家上次死亡的坐标                | `IntPos`         |
 | pl.realName              | 玩家的真实名字                    | `String`         |
@@ -71,12 +72,11 @@
 | pl.inWaterOrRain         | 玩家是否在水中或雨中              | `Boolean`        |
 | pl.inWorld               | 玩家是否在世界                    | `Boolean`        |
 | pl.inClouds              | 玩家是否在云端                    | `Boolean`        |
-| pl.sneaking              | 玩家当前是否正在潜行              | `Boolean`        |
 | pl.speed                 | 玩家当前速度                      | `Float`          |
 | pl.direction             | 玩家当前朝向                      | `DirectionAngle` |
 | pl.uniqueId              | 玩家（实体的）唯一标识符          | `String`         |
 | pl.langCode              | 玩家设置的语言的标识符(形如zh_CN) | `String`         |
-| pl.isLoading             | 玩家是否已经加载                  | `Boolean`        |
+| pl.isLoading             | 玩家是否正在加载                  | `Boolean`        |
 | pl.isInvisible           | 玩家是否隐身中                    | `Boolean`        |
 | pl.isInsidePortal        | 玩家在传送门中                    | `Boolean`        |
 | pl.isHurt                | 玩家是否受伤                      | `Boolean`        |
@@ -97,10 +97,11 @@
 | pl.isFlying              | 玩家是否在飞行                    | `Boolean`        |
 | pl.isSleeping            | 玩家是否正在睡觉                  | `Boolean`        |
 | pl.isMoving              | 玩家是否正在移动                  | `Boolean`        |
-| pl.ip                    | 玩家设备IP地址                    | `String`         |
+| pl.isSneaking            | 玩家是否正在潜行                  | `Boolean`        |
 
 这些对象属性都是只读的，无法被修改。其中：
 
+- **坐标** 和 **腿部坐标**：玩家为两格高，`pos`为玩家视角高度的坐标，`feetPos`为游戏内显示的方块坐标
 - **玩家游戏模式** 属性的取值为：`0` 代表生存模式，`1` 代表创造模式，`2` 代表冒险模式，`3` 代表旁观者模式 
 - **玩家真实名字** 属性储存的字符串可以被认为是可靠的，他们不会被改名而变动  
 - **玩家设备IP地址** 属性储存了玩家的设备IP以及端口号，格式类似`12.34.567.89:1111`  
@@ -356,6 +357,8 @@
 - 返回值: 到坐标的距离(方块)
 - 返回值类型:  `Number`
 
+> **注意** 若玩家的坐标与目标的坐标不在同一维度，将返回整数最大值。
+
 #### 以某个玩家身份向某玩家说话
 
 `pl.talkAs(target,text)`
@@ -382,13 +385,19 @@
 
 #### 传送玩家至指定位置  
 
-`pl.teleport(pos)`  
-`pl.teleport(x,y,z,dimid)`
+`pl.teleport(pos[,rot])` 
+`pl.teleport(x,y,z,dimid[,rot])`
 
 - 参数：
-  - pos :`IntPos `/ `FloatPos`  
+  - pos: `IntPos `/ `FloatPos` 
     目标位置坐标 （或者使用x, y, z, dimid来确定玩家位置）
+    
+  - rot: `DirectionAngle`
+  
+    （可选参数）传送后玩家的朝向，若缺省则与传送前朝向相同
+  
 - 返回值：是否成功传送
+
 - 返回值类型：`Boolean`
 
 - 示例：  
@@ -876,11 +885,13 @@
 
 #### 清除玩家背包中所有指定类型的物品
 
-`pl.clearItem(type)`
+`pl.clearItem(type[, count])`
 
 - 参数：
   - type : `String`  
     要清除的物品对象类型名
+  - count : `Integer`  
+    （可选参数）要清除的物品数量
 - 返回值：清除的物品个数
 - 返回值类型：`Integer`
 
@@ -892,11 +903,13 @@
     ```js
     // 对于一个玩家对象pl
     pl.clearItem("minecraft:dirt");
+    pl.clearItem("minecraft:dirt", 114514);
     ```
   - Lua
     ```lua
     -- 对于一个玩家对象pl
     pl:clearItem("minecraft:dirt")
+    pl:clearItem("minecraft:dirt", 1919)
     ```
 
 #### 刷新玩家物品栏、盔甲栏
@@ -977,7 +990,7 @@
 - 参数：
 
   - mode : `Integer`  
-    目标游戏模式，0为生存模式，1为创造模式，2为极限模式
+    目标游戏模式，0为生存模式，1为创造模式，2为冒险模式
 
 - 返回值：是否成功修改
 

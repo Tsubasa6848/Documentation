@@ -6,13 +6,13 @@
 
 ## Repository link
 
-https://github.com/LiteLDev/LLEssentials
+https://github.com/LiteLDev/LLMoney
 
 ## Configuration file path
 
 `plugins/LLMoney/money.json`
 Example:
-```jsonc
+```json
 {
     "language": "en-us",
     "def_money": 0, //Default money
